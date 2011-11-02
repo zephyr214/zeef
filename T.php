@@ -1,13 +1,9 @@
 <?php
 /** add path to Zend and Zeef to include path */
 set_include_path(
-	dirname(dirname(dirname(__FILE__))) . '/1.library' .  /** Zend lib */
-	PATH_SEPARATOR . dirname(__FILE__) . 
+	//dirname(dirname(__FILE__)) . '/Zendframework/v1.11.7' .  /** Zend lib */
 	PATH_SEPARATOR . get_include_path()
 );
-
-/** @see Zeef_Logger */
-require_once 'class/Zeef/Logger.php';
 
 /**
  * Sina Weibo
@@ -57,18 +53,11 @@ class T
     public function __construct()
     {
 		/** init SinaT service */
-        require_once 'class/Zeef/Service.php';
-		$config = new Zend_Config_Ini('etc/services.ini', 'Sinat', true);
+        require_once 'Service.php';
+		$config = new Zend_Config_Ini(dirname(__FILE__) . 'Service/etc/services.ini', 'Sinat', true);
 		$this->_service = Zeef_Service::factory($config);
 		$this->_service->setSuccessor($this->_service);
         
-		/** init Zeef Logger */
-		require_once 'class/Zeef/Logger.php';
-		$dataDir = dirname(dirname(__FILE__)) . '/data/sinabo/';
-        if (!is_dir($dataDir)) {
-            @mkdir($dataDir, 0777, true);
-        }		
-		$this->_logger = new Zeef_Logger($dataDir . self::LOG_FILE);
     }
     
     /**
@@ -149,6 +138,14 @@ class T
      */
     public function enableAutoLog()
     {
+		/** init Zeef Logger */
+		require_once 'Logger.php';
+		$dataDir = dirname(dirname(__FILE__)) . '/data/sinabo/';
+        if (!is_dir($dataDir)) {
+            @mkdir($dataDir, 0777, true);
+        }		
+		$this->_logger = new Zeef_Logger($dataDir . self::LOG_FILE);
+		        
         $this->_autoLog = true;
         return $this;
     }
@@ -259,7 +256,7 @@ class T
     }
     
     /**
-     * Returns the userâ€™s followers ID list. 
+     * Returns the user¡¯s followers ID list. 
      * 
      * @param	Integer|String	$user	User ID (int64) or nickname
      * @param	Integer			$cursor	Used for page request. Passes -1 for requesting the 1st page
@@ -281,7 +278,7 @@ class T
     }
     
     /**
-     * UnFollows a user. Returns the befriended userâ€™s profile when successful. 
+     * UnFollows a user. Returns the befriended user¡¯s profile when successful. 
      * 
      * @param	Integer|String	$user	User ID (int64) or nickname
      * @param	Integer			$cursor	Used for page request. Passes -1 for requesting the 1st page
@@ -299,5 +296,17 @@ class T
         
         return $this->_apiQuery($options);        
     }
+
+    public function statusesUpdate($content)
+    {
+        $options = array(
+            'status'        => $content,
+            'feedPath'		=> '/statuses/',
+            'action'		=> 'update'
+        );
+        
+        return $this->_apiQuery($options);        
+    }
+    
     
 }

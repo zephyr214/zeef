@@ -15,12 +15,6 @@
 class Zeef_Service_Adapter_Sinat extends Zeef_Service_Adapter_Abstract
 {
     /**
-     * url for oAuth
-     * @var string
-     */
-    const OAUTH_URL = 'http://api.t.sina.com.cn/oauth';
-    
-    /**
      * result type returned
      * @var string
      */
@@ -157,10 +151,10 @@ return $results;
     	        
     	        $authOptions = array(
         			'callbackUrl'	=> !empty($userOptions['callback']) ? $userOptions['callback'] : $callback,
-        			'siteUrl'		=> self::OAUTH_URL,
+        			'siteUrl'		=> $this->_config['oauthUrl'],
         			'consumerKey'	=> $this->_config['appKey'],
         			'consumerSecret'=> $this->_config['appSecret'],
-        	        'requestMethod' => Zend_Http_Client::GET
+        	        'requestMethod' => Zend_Http_Client::POST
         		);
     	    }
     	    $this->_authorize($authOptions);
@@ -183,8 +177,12 @@ return $results;
             $requiredOptions = explode(',', $this->_options['requiredOptions']);
         }
 		if ($this->_authMethod == self::AUTH_BASIC) {
-		    $requiredOptions[] = 'source';
+		    isset($requiredOptions['source']) OR $requiredOptions[] = 'source';
+		} else {
+		    $key = array_search('source', $requiredOptions);
+		    unset($requiredOptions[$key]);
 		}
+		
     	if (!empty($requiredOptions)) {
             foreach ($requiredOptions as $option) {
                 if (!empty($option) && !array_key_exists($option, $this->_options)) {

@@ -148,7 +148,9 @@ abstract class Zeef_Service_Adapter_Abstract implements SplSubject
     	    case self::AUTH_OAUTH:
                 require_once 'Zend/Oauth/Consumer.php';
         		$consumer = new Zend_Oauth_Consumer($authOptions);
-
+//echo "<pre>";
+//print_r($authOptions);
+//print_r($_COOKIE);exit;
         		//use existing access token
                 if (isset($_COOKIE[self::SYMBOL_ACCESS_TOKEN])) {
                     require_once 'Zend/Oauth/Config.php';
@@ -232,7 +234,7 @@ abstract class Zeef_Service_Adapter_Abstract implements SplSubject
         
         //sending request!
         do {
-    		$response = $this->_rest->restGet($this->_feedPath . $this->_action, $this->_options);
+    		$response = $this->_rest->restPOST($this->_feedPath . $this->_action, $this->_options);
         	if (!$response->isError()) return $response;
         	
             /** retry if errors */
