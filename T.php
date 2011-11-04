@@ -54,7 +54,7 @@ class T
     {
 		/** init SinaT service */
         require_once 'Service.php';
-		$config = new Zend_Config_Ini(dirname(__FILE__) . 'Service/etc/services.ini', 'Sinat', true);
+		$config = new Zend_Config_Ini(dirname(__FILE__) . '/Service/etc/services.ini', 'Sinat', true);
 		$this->_service = Zeef_Service::factory($config);
 		$this->_service->setSuccessor($this->_service);
         
