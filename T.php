@@ -113,18 +113,20 @@ class T
     public function __call($method, $params)
     {
         if ($method != 'multiThread') {
-            trigger_error('Call to undefined method ' . __CLASS__ . "::$method()", E_USER_ERROR);
-        }
-        
-        if (!method_exists($this, $this->_method)) {
         	if (substr($method, 0, 3) != 'set') {
-	            trigger_error('Call to undefined method ' . __CLASS__ . "::{$this->_method}()", E_USER_ERROR);
+            	trigger_error('Call to undefined method ' . __CLASS__ . "::$method()", E_USER_ERROR);
         	}
-        	
+            	
         	/** set a value of an option */
         	$option = substr($method, 3);
+        	$option{0} = strtolower($option{0});
         	$this->_options[$option] = array_shift($params);
         	return $this;
+        }
+
+        /** $this->_method will be setted in the magic funcion __get() */
+        if (!method_exists($this, $this->_method)) {
+            trigger_error('Call to undefined method ' . __CLASS__ . "::{$this->_method}()", E_USER_ERROR);
         }
         Zeef_Http_Client_Adapter_MultiCurl::$returnCurlHandle = true;
                
