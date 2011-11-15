@@ -10,7 +10,7 @@
  * @author		Zephyr Wu<zephyr214@gmail.com>
  * @copyright	Copyright (c) 2010-2011 Zeef. (http://www.Zeef.com)
  * @license		New BSD License
- * @version		SVN: $Id: Abstract.php,v 1.1 2009/10/22 06:25:01 Zephyr214@gmail.com Exp $
+ * @version		SVN: $Id$
  */
 require_once 'Zend/Rest/Client.php';
 abstract class Zeef_Service_Adapter_Abstract implements SplSubject
