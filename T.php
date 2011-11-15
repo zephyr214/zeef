@@ -4,7 +4,7 @@ set_include_path(
 	//dirname(dirname(__FILE__)) . '/Zendframework/v1.11.7' .  /** Zend lib */
 	PATH_SEPARATOR . get_include_path()
 );
- 
+
 /**
  * Sina Weibo
  *
