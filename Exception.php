@@ -7,7 +7,8 @@
  * @author		Zephyr Wu<zephyr214@gmail.com>
  * @copyright	Copyright (c) 2010-2011 Zeef. (http://www.Zeef.com)
  * @license		New BSD License
- * @version		SVN: $Id: Exception.php,v 1.1 2011/3/12 06:25:01 Zephyr214@gmail.com Exp $
+ * @versionx	CVS: $Id$
+ * @versionx	SVN: $Id$
  */
 class Zeef_Exception extends Exception
 {
