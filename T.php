@@ -46,6 +46,12 @@ class T
     protected $_method = null;
     
     /**
+     * options to pass to api query
+     * @var	array
+     */
+    protected $_options = array();
+    
+    /**
      * Constructor
      * 
      * @return void
@@ -70,7 +76,8 @@ class T
     protected function _apiQuery($options = array())
     {
         $options['curloptions'][CURLOPT_TIMEOUT] = 60;
-        
+        $options = array_merge($options, $this->_options);
+
         //query!
         try {
             $result = $this->_service->query($options);
@@ -97,6 +104,8 @@ class T
     /**
      * magic function __call
      * 
+     * @method T setCallback()	setCallback(string $value) set callback url
+     * 
      * @param	string	$method
      * @param	string	$params
      * @return	Array
@@ -106,8 +115,16 @@ class T
         if ($method != 'multiThread') {
             trigger_error('Call to undefined method ' . __CLASS__ . "::$method()", E_USER_ERROR);
         }
+        
         if (!method_exists($this, $this->_method)) {
-            trigger_error('Call to undefined method ' . __CLASS__ . "::{$this->_method}()", E_USER_ERROR);
+        	if (substr($method, 0, 3) != 'set') {
+	            trigger_error('Call to undefined method ' . __CLASS__ . "::{$this->_method}()", E_USER_ERROR);
+        	}
+        	
+        	/** set a value of an option */
+        	$option = substr($method, 3);
+        	$this->_options[$option] = array_shift($params);
+        	return $this;
         }
         Zeef_Http_Client_Adapter_MultiCurl::$returnCurlHandle = true;
                
@@ -256,7 +273,7 @@ class T
     }
     
     /**
-     * Returns the user¡¯s followers ID list. 
+     * Returns the userï¿½ï¿½s followers ID list. 
      * 
      * @param	Integer|String	$user	User ID (int64) or nickname
      * @param	Integer			$cursor	Used for page request. Passes -1 for requesting the 1st page
@@ -278,7 +295,7 @@ class T
     }
     
     /**
-     * UnFollows a user. Returns the befriended user¡¯s profile when successful. 
+     * UnFollows a user. Returns the befriended userï¿½ï¿½s profile when successful. 
      * 
      * @param	Integer|String	$user	User ID (int64) or nickname
      * @param	Integer			$cursor	Used for page request. Passes -1 for requesting the 1st page
