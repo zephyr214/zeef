@@ -11,7 +11,7 @@ set_include_path(
  * @author		Zephyr Wu<zephyr214@gmail.com>
  * @copyright	Copyright (c) 2010-2011 Zeef. (http://www.Zeef.com)
  * @license		New BSD License
- * @version		SVN: $Id: class.SinaWeibo.php,$Revision$ ,$Date$ Zephyr214@gmail.com Exp $
+ * @version		SVN: $Id$,$Revision$ ,$Date$
  */
 class T
 {
