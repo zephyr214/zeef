@@ -11,7 +11,7 @@ set_include_path(
  * @author		Zephyr Wu<zephyr214@gmail.com>
  * @copyright	Copyright (c) 2010-2011 Zeef. (http://www.Zeef.com)
  * @license		New BSD License
- * @version		SVN: $Id$,$Revision$ ,$Date$
+ * @version		$Id$
  */
 class T
 {
