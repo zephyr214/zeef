@@ -148,9 +148,7 @@ abstract class Zeef_Service_Adapter_Abstract implements SplSubject
     	    case self::AUTH_OAUTH:
                 require_once 'Zend/Oauth/Consumer.php';
         		$consumer = new Zend_Oauth_Consumer($authOptions);
-//echo "<pre>";
-//print_r($authOptions);
-//print_r($_COOKIE);exit;
+
         		//use existing access token
                 if (isset($_COOKIE[self::SYMBOL_ACCESS_TOKEN])) {
                     require_once 'Zend/Oauth/Config.php';
@@ -234,6 +232,7 @@ abstract class Zeef_Service_Adapter_Abstract implements SplSubject
         
         //sending request!
         do {
+            /** @var Zend_Http_Response $response */
     		$response = $this->_rest->restPOST($this->_feedPath . $this->_action, $this->_options);
         	if (!$response->isError()) return $response;
         	
@@ -248,10 +247,13 @@ abstract class Zeef_Service_Adapter_Abstract implements SplSubject
             require_once 'Zend/Service/Exception.php';
         	$request = new Zend_Controller_Request_Http();
         	$url = 'http://' . $request->getServer('SERVER_NAME') . $request->getServer('REQUEST_URI');
-            throw new Zend_Service_Exception(
-				'An error occurred sending request. Status code: ' . $response->getStatus() . PHP_EOL .
-				"Url: {$this->_rest->getUri()->__toString()}?" . http_build_query($this->_options) . " and request url: $url"
-			);
+        	$error = 'An error occurred sending request. Status code: ' . $response->getStatus() . PHP_EOL .
+					 "Url: {$this->_rest->getUri()->__toString()}?" . http_build_query($this->_options) . " and request url: $url";
+        	
+        	if (method_exists($this, 'fetchRawError')) {
+        	    $error .= PHP_EOL . 'Raw Error: ' . $this->fetchRawError($response);
+        	}
+            throw new Zend_Service_Exception($error);
         } while ($this->_retry-- > 0 && $response->isError());
             	
         return $response;

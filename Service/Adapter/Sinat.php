@@ -122,7 +122,15 @@ return $results;
     	
     	return $results;
     }
-        	
+
+    public function fetchRawError(Zend_Http_Response $response)
+    {
+        $res = json_decode($response->getBody());
+        return $res->error;
+    }
+    
+    
+    
     /**
      * prepare request options for sending to Sina T
      *
